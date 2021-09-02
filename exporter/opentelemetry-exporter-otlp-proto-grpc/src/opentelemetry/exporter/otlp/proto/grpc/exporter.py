@@ -88,7 +88,13 @@ def environ_to_compression(environ_key: str) -> Optional[Compression]:
 
 def _translate_value(value: Any) -> KeyValue:
 
-    if isinstance(value, bool):
+    if value is None:
+        # From comments on the proto source of AnyValue:
+        #   The value is one of the listed fields. It is valid for all values to be unspecified
+        #   in which case this AnyValue is considered to be "null".
+        any_value = AnyValue()
+
+    elif isinstance(value, bool):
         any_value = AnyValue(bool_value=value)
 
     elif isinstance(value, str):

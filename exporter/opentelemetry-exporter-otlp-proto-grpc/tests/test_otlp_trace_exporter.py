@@ -804,6 +804,12 @@ class TestOTLPSpanExporter(TestCase):
 
     # pylint:disable=no-member
     def test_translate_key_values(self):
+        none_value = _translate_key_values("none_type", None)
+        self.assertTrue(isinstance(none_value, KeyValue))
+        self.assertEqual(none_value.key, "none_type")
+        self.assertTrue(isinstance(none_value.value, AnyValue))
+        self.assertIsNone(none_value.value.WhichOneof('value'))
+
         bool_value = _translate_key_values("bool_type", False)
         self.assertTrue(isinstance(bool_value, KeyValue))
         self.assertEqual(bool_value.key, "bool_type")
